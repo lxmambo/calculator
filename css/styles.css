@@ -45,34 +45,33 @@ html{
 
 body {
     display: flex;
+    background: blueviolet;
     /*background-image: linear-gradient(236deg,)*/
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.container{
-    width: 75%;
-}
-
 .calculator {
     box-shadow: 0 0 25px 0 rgba(0,0,0,0,0.5);
+    border-radius: 0.5em;
+    overflow: hidden; /*sometimes is needed to show border*/
 }
 
 .calculator__display {
     background-color: var(--grey-900);
     color: var(--grey-050);
-    width: 100%;
-    /*width: 16.25rem;*/
-    padding: .745rem 1rem; /*more on left and right*/
+    width: 16.25rem;
+    padding: 0.75rem 1rem; /*more on left and right*/
     text-align: right;
     font-size: calc(1rem * 1.2 * 1.2);
     /*multiplying by 1.2 gives you another up scalse*/
 }
 
 .calculator__keys {
-    background: pink;
+    background: blueviolet;
     display: grid; /*assumes 1 column by default*/
+    grid-gap: 2px;
     grid-template-columns: repeat(4, auto);
     grid-template-areas:
         ". . . ." /*dots are unnamed areas*/
@@ -81,6 +80,13 @@ body {
         "one two three equal"
         "zero decimal clear equal"
 }
+
+
+/*buttons inside calculator keys*/
+.calculator__keys > button {
+    border:0;
+}
+
 
 .one {
     grid-area: one;
@@ -126,14 +132,24 @@ body {
     background-color: var(--orange-400);
 }
 
-.equal:hover,
-.equal:focus {
+.equal:active {
     background-color: var(--orange-500);
 }
 
-.plus,
-.minus,
-.times,
-.divide {
+.operator {
     background: var(--grey-100);
+}
+
+.number {
+    background: var(--grey-050);
+}
+
+.operator:focus,
+.number:focus {
+    outline: 2px solid black;
+}
+
+.operator:active,
+.number:active {
+    background: var(--grey-200);
 }

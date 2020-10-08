@@ -1,3 +1,8 @@
 "# calculator" 
+Video 1
 https://www.youtube.com/watch?v=EuwzyB_FQNs
-27:34
+
+Video 2
+https://www.youtube.com/watch?v=f0SG2j6d-Kg
+
+36:45
