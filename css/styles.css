@@ -136,20 +136,26 @@ body {
     background-color: var(--orange-500);
 }
 
-.operator {
+/*in css we can style attributes wit square brackets []*/
+
+[data-type="operator"] {
     background: var(--grey-100);
 }
 
-.number {
+[data-type="number"] {
     background: var(--grey-050);
 }
 
-.operator:focus,
-.number:focus {
+[data-type="operator"]:focus,
+[data-type="number"]:focus {
     outline: 2px solid black;
 }
 
-.operator:active,
-.number:active {
+[data-type="operator"]:active,
+[data-type="number"]:active {
+    background: var(--grey-200);
+}
+
+[data-state="selected"]{
     background: var(--grey-200);
 }

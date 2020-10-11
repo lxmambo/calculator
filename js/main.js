@@ -3,6 +3,7 @@ const calculator = document.querySelector('.calculator');
 const keys = calculator.querySelector('.calculator__keys');
 const display = calculator.querySelector('.calculator__display');
 
+
 keys.addEventListener('click', event => {
     /*every event contains information about what has been clicked on
     and we can get the target where the event is acting on*/
@@ -14,23 +15,44 @@ keys.addEventListener('click', event => {
     const key = event.target; //the element targeted
     const keyValue = key.textContent;
     const displayValue = display.textContent;
+    /*const type = key.dataset.type;*/
+    const { type } = key.dataset;
+    /*above statement is equal to the one above with .type*/
+    const { previousKeyType } = calculator.dataset;
+
     
     //is this a number key?
-    if(key.classList.contains("number")){
+    if(type === 'number'){
         if(displayValue === '0'){
             display.textContent = keyValue;
+        } else if (previousKeyType ==='operator'){
+            display.textContent = keyValue;
+
         } else {
             display.textContent = displayValue + keyValue;
         }
     }
 
     //is this an operator key?
-    key.dataset.keyType === 'operator';
-    if(key.classList.contains('operator')){
+    if(type === 'operator'){
         //using dataset attribute to record state?
         //this instruction adds info to the dom?
-        calculator.dataset.previousKeyType = 'operator'
+        const operatorKeys = keys.querySelectorAll('[data-type="operator"]');
+        operatorKeys.forEach(el =>{ el.dataset.state = ''});
+    
+        /*another way of determine wich operator is selected:
+        const currentActiveOperator = calculator.querySelector([data-state='selected']);
+        if(currentActiveOperator){
+        currentActiveOperator.dataset.state = ''}*/
+
+        key.dataset.state = 'selected';
     }
+
+    if(type === 'equal'){
+        //perform a calculation
+    }
+
+    calculator.dataset.previousKeyType = type;
 
     console.log(key);
     console.log(key.textContent);
