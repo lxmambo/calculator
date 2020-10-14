@@ -2,6 +2,7 @@
 const calculator = document.querySelector('.calculator');
 const keys = calculator.querySelector('.calculator__keys');
 const display = calculator.querySelector('.calculator__display');
+const operatorKeys = keys.querySelectorAll('[data-type="operator"]');
 
 
 keys.addEventListener('click', event => {
@@ -40,7 +41,6 @@ keys.addEventListener('click', event => {
     if(type === 'operator'){
         //using dataset attribute to record state?
         //this instruction adds info to the dom?
-        const operatorKeys = keys.querySelectorAll('[data-type="operator"]');
         operatorKeys.forEach(el =>{ el.dataset.state = ''});
     
         /*another way of determine wich operator is selected:
@@ -66,7 +66,9 @@ keys.addEventListener('click', event => {
     }
 
     if(type === 'clear') {
-        displayValue.textContent = 0;
+        display.textContent = '0';
+        delete calculator.dataset.firstNumber;
+        delete calculator.dataset.operator;
     }
 
     calculator.dataset.previousKeyType = type;
@@ -107,11 +109,122 @@ function calculate(firstNumber, operator, secondNumber){
 // ===========================
 // TESTING
 // ===========================
+function clearCalculator () {
+    // press the clear key
+    const clearKey = document.querySelector('[data-type = "clear"]');
+    clearKey.click();
+    // clear operator states
+    operatorKeys.forEach(key => { key.dataset.state = ''})
+}
 
-const one = document.querySelector('.one');
+function testClearKey () {
+    clearCalculator();
+    console.assert(display.textContent === '0', 'Clear key. Display should be 0');
+    console.assert(!calculator.dataset.firstNumber, 'Clear key. No first number remains');
+    console.assert(!calculator.dataset.operator, 'Clear key. No operator remains');
+}
+
+//this next variables are not necessary anymore after
+//creating the testKeySequence function with objects
+/*
+const one = document.querySelector('[data-key="1"]');
+const five = document.querySelector('[data-key="5"]');
+const nine = document.querySelector('[data-key="9"]');
+*/
+
+/*
+//testKeySequence function 1 -> passing a sequence of arguments
+//passing an array of arguments
+function testKeySequence(...keys){
+    const array = [...keys];
+    //pressing many keys
+    array.forEach(key => {
+        //pressing one key
+        document.querySelector(`[data-key="${key}"]`).click();
+    })
+
+    // Assertion
+    // 1. Value to assert
+    // 2. Test Message
+}
+testKeySequence('1','5','9');
+*/
+
+//testKeySequence function 2 -> passing an object
+function testKeySequence(test){
+    //press keys
+    test.keys.forEach(key =>{
+        document.querySelector(`[data-key="${key}"]`).click();
+        console.log(`${key}`);
+    })
+    //assertion
+    console.assert(display.textContent === test.value, test.message)
+    //clear calculation
+    clearCalculator();
+    testClearKey();
+}
+
+const tests = [ {
+    keys: ['1'],
+    value: '1',
+    message: 'click 1'
+    },{
+    keys: ['1','5'],
+    value: '15',
+    message: 'click 15'
+    },{
+    keys: ['1','5','9'],
+    value: '159',
+    message: 'click 159'
+    },{
+    keys: ['2','4','plus','7','equal'],
+    value: '31',
+    message: 'calculation with plus'
+    },{
+    keys: ['3','minus','7','0','equal'],
+    value: '-67',
+    message: 'calculation with plus'
+    },{
+    keys: ['9','divide','3','equal'],
+    value: '3',
+    message: 'calculation with divide'
+    },{
+    keys: ['9','divide','0','equal'],
+    value: 'infinity',
+    message: 'calculation. divide by zero.'
+    },{
+    keys: ['1','5','times','9','equal'],
+    value: '135',
+    message: 'calculation with times'
+}];
+
+tests.forEach(testKeySequence)
+
+/*
+// One test
 one.click();
 console.assert(display.textContent === '1', 'Clicked One');
+// after every test we need to run a clear function
+setTimeout(_ => {
+    clearCalculator();
+    testClearKey();
+}, 1000);
 
 //one.addEventListener('click', event => {
 //    console.log('hello!')
 //})
+
+// 15 test
+one.click();
+five.click();
+console.assert(display.textContent === '15', 'click 1 and 5');
+clearCalculator();
+testClearKey();
+
+//159
+one.click();
+five.click();
+nine.click();
+console.assert(display.textContent === '159', 'clicked 1 and 5');
+clearCalculator();
+testClearKey();*/
